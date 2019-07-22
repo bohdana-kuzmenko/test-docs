@@ -1,1 +1,2 @@
 sphinx_pdj_theme
+sphinx_drove_theme
