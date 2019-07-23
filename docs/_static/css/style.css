@@ -11,5 +11,5 @@ nav.wy-nav-top {
     visibility: hidden!important;
 }
 .ethical-rtd ethical-dark-theme {
-    visibility: hidden;
+    visibility: hidden!important;
 }
