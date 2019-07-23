@@ -17,3 +17,4 @@ Content
    license
    core
    providers
+   genindex
