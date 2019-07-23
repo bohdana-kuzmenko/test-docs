@@ -8,7 +8,7 @@ nav.wy-nav-top {
     border-color: #b6b7b7
 }
 .wy-side-nav-search > div.version {
-    visibility: hidden;
+    visibility: hidden!important;
 }
 .ethical-rtd ethical-dark-theme {
     visibility: hidden;
