@@ -1,6 +1,15 @@
 Core
 =================
 
+Info
+_________________
+
+|  Contains domain and infrastructure submodules
+|  Some useful information
+
+
+Content
+_________________
 .. automodule:: dlab_core
    :members:
    :undoc-members:
