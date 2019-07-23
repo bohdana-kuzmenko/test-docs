@@ -10,6 +10,6 @@ nav.wy-nav-top {
 .wy-side-nav-search > div.version {
     visibility: hidden!important;
 }
-.ethical-rtd ethical-dark-theme {
+.wy-nav-side .ethical-rtd {
     visibility: hidden!important;
 }
