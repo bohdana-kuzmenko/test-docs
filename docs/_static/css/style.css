@@ -1,0 +1,15 @@
+div.wy-side-nav-search {
+    background-color: #FDA03A;
+}
+nav.wy-nav-top {
+    background: #FDA03A
+}
+.wy-side-nav-search input[type=text] {
+    border-color: #b6b7b7
+}
+.wy-side-nav-search > div.version {
+    visibility: hidden!important;
+}
+.wy-nav-side .ethical-rtd {
+    visibility: hidden!important;
+}
