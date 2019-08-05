@@ -22,4 +22,5 @@
 
 class DLabException(Exception):
     """Base class for DLab exceptions."""
+
     pass

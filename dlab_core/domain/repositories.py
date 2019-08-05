@@ -22,9 +22,18 @@
 import abc
 import six
 
+from dlab_core.domain.exceptions import DLabException
+
+
+class RepositoryException(DLabException):
+    """Base class for Repository execution exceptions."""
+
+    pass
+
 
 @six.add_metaclass(abc.ABCMeta)
 class BaseRepository:
+    """Base class for Repositories."""
 
     @abc.abstractmethod
     def find_one(self, key):

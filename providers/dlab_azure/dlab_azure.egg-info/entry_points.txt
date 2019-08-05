@@ -1,0 +1,3 @@
+[dlab.plugin]
+aws = dlab_azure.registry:bootstrap
+

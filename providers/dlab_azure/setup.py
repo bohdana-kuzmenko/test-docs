@@ -29,4 +29,8 @@ setup(
     url='http://dlab.apache.org/',
     description='This a provider to DLab that adds Azure support.',
     packages=find_packages(),
+    entry_points={
+        "dlab.plugin": [
+            "aws = dlab_azure.registry:bootstrap",
+        ]}
 )

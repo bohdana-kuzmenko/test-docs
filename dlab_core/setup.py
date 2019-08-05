@@ -24,7 +24,6 @@ import os
 import six
 import sys
 
-from dlab_core.domain.exceptions import DLabException
 from setuptools import find_packages
 
 
@@ -99,8 +98,13 @@ README_FILE = 'README.md'
 REQUIREMENTS_FILE = 'requirements.txt'
 
 
-class DLabSetupException(DLabException):
-    """Class for DLab Setup exceptions."""
+class SetupException(Exception):
+    """Class for Setup exceptions."""
+    pass
+
+
+class FileNotFoundException(IOError):
+    """Exception class thrown when a file couldn't be found"""
     pass
 
 
@@ -134,7 +138,7 @@ class BaseSetupParametersBuilder:
 
     @abc.abstractmethod
     def set_version(self):
-        """Set package version see PEP 440 for more details on versions
+        """Set package version see PEP 440 for more details on versions.
 
         :return: None
         """
@@ -169,14 +173,14 @@ class SetupParametersDirector:
     """
 
     def __init__(self):
-        """Director constructor
+        """Director constructor.
         """
         self._builder = None
 
     def build(self, builder):
-        """Build setup parameters
+        """Build setup parameters.
 
-        :param builder: Parameters builder
+        :param builder: Parameters builder.
         :type builder: BaseSetupParametersBuilder
 
         :return: None
@@ -187,9 +191,6 @@ class SetupParametersDirector:
         self._builder.set_requirements()
         self._builder.set_version()
         self._builder.set_long_description()
-
-        # TODO implement me
-        # self._builder.set_entry_points()
 
     @property
     def parameters(self):
@@ -208,13 +209,13 @@ class SetupParametersBuilder(BaseSetupParametersBuilder):
     """
 
     def __init__(self, name, description):
-        """Builder constructor
+        """Builder constructor.
 
-        :param name: Distribution name of your package
         :type name: str
+        :param name: Distribution name of your package.
 
-        :param description: Short, one-sentence summary of the package
         :type description: str
+        :param description: Short, one-sentence summary of the package.
         """
 
         self._name = name
@@ -244,26 +245,25 @@ class SetupParametersBuilder(BaseSetupParametersBuilder):
 
     @staticmethod
     def _read_file(name):
-        """
-        Get content by filename
+        """Get content by filename.
 
-        :param name: File location
         :type name: str
+        :param name: File location.
 
         :return: str
         """
 
         if not os.path.isfile(name):
-            raise DLabSetupException("No such file or directory: '{}'".format(
-                name
-            ))
+            raise FileNotFoundException(
+                "No such file or directory: '{}'".format(name)
+            )
 
         try:
             with open(name, "r") as fh:
                 return fh.read()
         except IOError as e:
             if hasattr(e, 'filename'):
-                e = DLabSetupException("{}: '{}'".format(
+                e = SetupException("{}: '{}'".format(
                     e.strerror,
                     e.filename
                 ))
@@ -297,7 +297,7 @@ class SetupParametersBuilder(BaseSetupParametersBuilder):
 
     @property
     def lib_file(self):
-        """Get library file location
+        """Get library file location.
 
         :return: str
         """
@@ -305,41 +305,38 @@ class SetupParametersBuilder(BaseSetupParametersBuilder):
 
     @property
     def version_file(self):
-        """Get version file location
+        """Get version file location.
 
         :return: str
         """
         return os.path.join(self._name, VERSION_FILE)
 
     def set_version(self):
-        """Set package version see PEP 440 for more details on versions
+        """Set package version see PEP 440 for more details on versions.
 
         :return: None
         """
 
         _locals = {}
-        content = None
 
-        if os.path.isfile(self.lib_file):
+        try:
             content = self._read_file(self.lib_file)
-
-        if content is None and os.path.isfile(self.version_file):
-            content = self._read_file(self.version_file)
-
-        if content is None:
-            raise DLabSetupException('No version or library file')
+        except FileNotFoundException:
+            content = None
 
         try:
+            if content is None:
+                content = self._read_file(self.version_file)
             exec(content, None, _locals)
-        except SyntaxError as e:
-            raise DLabSetupException(e.text)
-
-        try:
             self._parameters['version'] = _locals['__version__']
+        except SyntaxError as e:
+            raise SetupException(e.text)
         except KeyError:
-            raise DLabSetupException("name '{}' is not defined".format(
+            raise SetupException("name '{}' is not defined".format(
                 '__version__'
             ))
+        except FileNotFoundException:
+            raise SetupException('No version or library file')
 
     def set_long_description(self):
         """Set detailed description of the package. This is shown on the

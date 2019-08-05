@@ -12,6 +12,7 @@
 #
 import os
 import sys
+import msmb_theme
 
 sys.path.insert(0, os.path.abspath('..'))
 
@@ -31,9 +32,20 @@ release = '1.0.0'
 # ones.
 master_doc = 'index'
 
-extensions = ['sphinx.ext.todo',
-              'sphinx.ext.autodoc',
-              'sphinx.ext.coverage']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.coverage',
+    'sphinx.ext.viewcode',
+    'sphinxarg.ext',
+    'autoapi.extension',
+]
+
+autodoc_default_options = {
+    'show-inheritance': True,
+    'members': True
+}
+
+autoapi_dirs = ['../dlab_core', '../plugins', '../providers']
 
 html_show_sourcelink = False
 
@@ -54,9 +66,6 @@ exclude_patterns = [
     '_build',
     'Thumbs.db',
     '.DS_Store',
-    'setup',
-    'modules/source/setup',
-    'modules/source/dlab_core.setup',
 ]
 
 add_module_names = False
@@ -68,12 +77,9 @@ add_module_names = False
 
 
 html_theme = 'msmb_theme'
-import msmb_theme
 html_theme_path = [msmb_theme.get_html_theme_path()]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-
-

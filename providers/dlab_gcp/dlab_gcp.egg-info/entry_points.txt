@@ -1,0 +1,3 @@
+[dlab.plugin]
+gcp = dlab_gcp.registry:bootstrap
+

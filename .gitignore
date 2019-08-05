@@ -1,0 +1,13 @@
+*.pyc
+.coverage
+.DS_Store
+.eggs
+.idea
+.tox
+build
+coverage.xml
+dist
+dlab_core.egg-info
+htmlcov
+plugins/*/*.egg-info
+providers/*/*.egg-info
